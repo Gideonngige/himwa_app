@@ -1,44 +1,61 @@
 // app/(tabs)/home.jsx
 
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
-    <ScrollView className="flex-1 bg-white p-4">
+    <ScrollView className="flex-1 bg-white p-2">
       {/* Header */}
-      <Text className="text-2xl font-bold text-blue-700 mb-4">
-        Welcome to Himwa
+      <Text className="text-2xl font-bold text-blue-700 p-2 mb-2">
+        Welcome, Gideon Ushindi
       </Text>
 
-      {/* Summary Cards */}
-      <View className="flex-row justify-between mb-4">
-        <View className="bg-blue-100 p-4 rounded-xl w-[48%]">
-          <Text className="text-sm text-gray-500">My Contributions</Text>
-          <Text className="text-xl font-semibold text-blue-800">KES 4,500</Text>
-        </View>
+      <View className="bg-white rounded-xl shadow-md p-4 m-2">
+      {/* Image */}
+      <Image
+        source={require('../../assets/images/members.png')}
+        className="w-full h-40 rounded-lg mb-4"
+        resizeMode="cover"
+      />
 
-        <View className="bg-green-100 p-4 rounded-xl w-[48%]">
-          <Text className="text-sm text-gray-500">Loans Balance</Text>
-          <Text className="text-xl font-semibold text-green-800">KES 2,000</Text>
-        </View>
+      {/* Text Description */}
+      <Text className="text-xl font-semibold text-blue-800 mb-2">Welcome to Himwa</Text>
+      <Text className="text-gray-700 text-base">
+        Himwa is a community-driven platform that empowers individuals through financial inclusion, 
+        savings, investments, and group support. Together, we build a better future.
+      </Text>
+    </View>
+
+    {/* Core Values Card */}
+      <View className="bg-blue-100 p-4 rounded-xl mb-4">
+        <Text className="text-xl font-bold text-blue-800 mb-2">Our Core Values</Text>
+        <Text className="text-gray-700">
+          • Integrity{'\n'}
+          • Transparency{'\n'}
+          • Teamwork{'\n'}
+          • Empowerment{'\n'}
+          • Accountability
+        </Text>
       </View>
 
-      {/* Quick Actions */}
-      <Text className="text-lg font-semibold text-gray-700 mb-2">Quick Actions</Text>
-      <View className="space-y-3">
-        <TouchableOpacity className="bg-blue-500 p-3 rounded-lg">
-          <Text className="text-white text-center">Make Contribution</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="bg-green-500 p-3 rounded-lg">
-          <Text className="text-white text-center">Apply for Loan</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="bg-yellow-500 p-3 rounded-lg">
-          <Text className="text-white text-center">View Reports</Text>
-        </TouchableOpacity>
+      {/* Mission Card */}
+      <View className="bg-green-100 p-4 rounded-xl mb-4">
+        <Text className="text-xl font-bold text-green-800 mb-2">Our Mission</Text>
+        <Text className="text-gray-700">
+          To empower communities through financial inclusion, collaborative savings, and accessible investment opportunities.
+        </Text>
       </View>
+
+      {/* Vision Card */}
+      <View className="bg-yellow-100 p-4 rounded-xl mb-4">
+        <Text className="text-xl font-bold text-yellow-800 mb-2">Our Vision</Text>
+        <Text className="text-gray-700">
+          To be the leading digital platform for community-based economic empowerment across Africa.
+        </Text>
+      </View>
+
+
     </ScrollView>
   );
 }

@@ -44,7 +44,7 @@ const renderItem = ({ item }) => (
         <TouchableOpacity className="bg-blue-500 rounded-full" onPress={()=>router.push("/signup")}>
         <Text className="text-white text-center font-semibold text-lg font-lato p-4">Create new account</Text>
       </TouchableOpacity>
-      <TouchableOpacity className="bg-blue-500 rounded-full mt-8" onPress={()=>{router.push("/signin")}}>
+      <TouchableOpacity className="bg-blue-500 rounded-full mt-8" onPress={()=>{router.push("/(tabs)/home")}}>
         <Text className="text-white text-center font-semibold text-lg font-lato p-4">I already have an account</Text>
       </TouchableOpacity>
       </View>
