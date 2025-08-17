@@ -8,8 +8,11 @@ export default function RootLayout() {
     
     <SafeAreaProvider>
       {/* <Provider store={store}> */}
-      <Stack screenOptions={{headerShown: false}}>
+      <Stack screenOptions={{headerShown: true}}>
         <Stack.Screen name="index" options={{title:"Welcome"}}  />
+        <Stack.Screen name="signin" options={{title:"Signin"}}  />
+        <Stack.Screen name="signup" options={{title:"Signup"}}  />
+        <Stack.Screen name="resetpassword" options={{title:"Reset password"}}  />
 
       </Stack>
       {/* </Provider> */}

@@ -41,10 +41,10 @@ const renderItem = ({ item }) => (
       <Text className="mt-6 text-small text-center font-lato">Welcome to Himwa App. Monitor your water consumption easily, pay your bills from your phone, download receipts and himwa monthly, quartely and yearly reports</Text>
 
       <View className="mt-8 w-full">
-        <TouchableOpacity className="bg-blue-500 rounded-full" onPress={()=>router.push("/signup")}>
+        <TouchableOpacity className="bg-blue-500 rounded-full" onPress={()=>router.push("/pushnotifications")}>
         <Text className="text-white text-center font-semibold text-lg font-lato p-4">Create new account</Text>
       </TouchableOpacity>
-      <TouchableOpacity className="bg-blue-500 rounded-full mt-8" onPress={()=>{router.push("/(tabs)/home")}}>
+      <TouchableOpacity className="bg-blue-500 rounded-full mt-8" onPress={()=>{router.push("/signin")}}>
         <Text className="text-white text-center font-semibold text-lg font-lato p-4">I already have an account</Text>
       </TouchableOpacity>
       </View>
