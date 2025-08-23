@@ -1,10 +1,12 @@
 // app/(tabs)/home.jsx
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from "expo-router";
-import React, { useState } from 'react';
-import { ActivityIndicator, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Profile() {
@@ -25,6 +27,28 @@ export default function Profile() {
       { label: 'Matengeni', value: 'Matengeni' },
       { label: 'Safirisi', value: 'Safirisi' },
     ]);
+
+
+   useFocusEffect(
+  useCallback(() => {
+    const handleGetData = async () => {
+      try {
+        const name = await AsyncStorage.getItem('member_name');
+        const phonenumber = await AsyncStorage.getItem('phonenumber');
+        const profile_image = await AsyncStorage.getItem('profile_image');
+
+
+        setPhonenumber(phonenumber);
+        setFullname(name);
+        setProfileImg(profile_image);
+      } catch (error) {
+        console.error("Error retrieving user data:", error);
+      }
+    };
+
+    handleGetData();
+  }, [])
+);
 
   
     // Pick an image from gallery
@@ -51,10 +75,12 @@ export default function Profile() {
 
     setIsLoading(true);
     try {
+      const member_id = await AsyncStorage.getItem('member_id');
+      const auth_token = await AsyncStorage.getItem('token');
       const formData = new FormData();
-      formData.append("farmer_id", farmerId);
-      formData.append("farmer_name", fullname);
-      formData.append("phone_number", phonenumber);
+      formData.append("member_id", member_id);
+      formData.append("member_name", fullname);
+      formData.append("phonenumber", phonenumber);
       formData.append("area_of_residence", value);
 
       if (selectedImage) {
@@ -70,11 +96,12 @@ export default function Profile() {
       }
 
       const response = await axios.post(
-        "https://farmlinkbackend-qupt.onrender.com/updateprofile/",
+        "http://172.16.88.203:8000/updateprofile/",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${auth_token}`
           },
         }
       );

@@ -3,7 +3,7 @@ import { router } from "expo-router";
 // import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from "react";
-import { ActivityIndicator, Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
 // import Toast from "react-native-toast-message";
 import '../global.css';
 
@@ -16,17 +16,13 @@ export default function SignIn() {
   // start of handle login
   const handleSignIn = async () => {
     if(email == "" || password == ""){
-    //   Toast.show({
-    //     type: "error", // Can be "success", "error", "info"
-    //     text1: "Empty fields",
-    //     text2: "Please fill in all fields",
-    //   });
+    Alert.alert("Error", "Please fill in all fields");
       return;
     }
     else{
     setIsLoading(true);
     try {
-      const response = await fetch('https://farmlinkbackend-qupt.onrender.com/signin/', {
+      const response = await fetch('http://172.16.88.203:8000/signin/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,15 +35,14 @@ export default function SignIn() {
       
       const data = await response.json();
       if (response.status === 200) {
-        await AsyncStorage.setItem("farmer_id", data.farmer_id.toString());
-        await AsyncStorage.setItem("farmer_name", data.farmer_name);
-        await AsyncStorage.setItem("farmer_email", data.farmer_email);
-        await AsyncStorage.setItem("phone_number", data.phone_number);
-        await AsyncStorage.setItem("county", data.county);
-        await AsyncStorage.setItem("county_id", data.county_id.toString());
+        await AsyncStorage.setItem("member_id", data.member_id.toString());
+        await AsyncStorage.setItem("member_name", data.member_name);
+        await AsyncStorage.setItem("member_email", data.member_email);
+        await AsyncStorage.setItem("phonenumber", data.phonenumber);
         await AsyncStorage.setItem("area_of_residence", data.area_of_resident);
         await AsyncStorage.setItem("profile_image", data.profile_image);
         await AsyncStorage.setItem("date_joined", data.date_joined);
+        await AsyncStorage.setItem("token", data.token);
         if(data.farmer_email == "adminfarmlink@gmail.com"){
           setEmail("");
           setPassword("");
@@ -63,20 +58,11 @@ export default function SignIn() {
         
       } 
       else {
-        // Toast.show({
-        //   type: "error", // Can be "success", "error", "info"
-        //   text1: "Login failed",
-        //   text2: response.data.message,
-        // });
-        // alert("Login Failed:", response.data);
+        Alert.alert("Error", "Login failed!");
         return null;
       }
     } catch (error) {
-    //   Toast.show({
-    //     type: "error", // Can be "success", "error", "info"
-    //     text1: "Login failed",
-    //     text2: error.message,
-    //   });
+    Alert.alert("Error", `${error.message}`);
       return null;
     }
     finally{
@@ -128,7 +114,7 @@ export default function SignIn() {
       <TouchableOpacity className="w-full flex-row justify-end m-4" onPress={() => router.push("/resetpassword")}>
       <Text className="text-lg">Forgot password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity className="w-full bg-blue-500  p-4 rounded-lg" onPress={handleSignIn }>
+      <TouchableOpacity className="w-full bg-blue-500  p-4 rounded-lg" onPress={handleSignIn}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">SignIn</Text> }
         
       </TouchableOpacity>

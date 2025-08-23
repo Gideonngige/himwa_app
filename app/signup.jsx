@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Alert, Image, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 // import Toast from "react-native-toast-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,6 +11,7 @@ export default function SignUp() {
     const router = useRouter();
 
     const [fullname, setFullname] = useState("");
+    const [nationalID, setNationalID] = useState("");
     const [phonenumber, setPhonenumber] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,82 +20,40 @@ export default function SignUp() {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isConfirmVisible, setIsConfirmVisible] = useState(false);
 
-    // County dropdown state
-    const [countyOpen, setCountyOpen] = useState(false);
-    const [countyValue, setCountyValue] = useState(null);
-    const [counties, setCounties] = useState([]);
-
     // Area dropdown state
     const [areaOpen, setAreaOpen] = useState(false);
     const [areaValue, setAreaValue] = useState(null);
-    const [areas, setAreas] = useState([]);
+    const [areas, setAreas] = useState([
+        { label: "Hindi", value: "Hindi" },
+        { label: "Sabasaba", value: "Sabasaba" },
+        { label: "Hindi Town", value: "Hindi Town" },
+        { label: "Safirisi", value: "Safirisi" },
+        { label: "Kiongoni", value: "Kiongoni" },
+        { label: "Matengeni", value: "Matengeni" },
+    ]);
 
-    // Fetch counties on load
-    useEffect(() => {
-        const fetchCounties = async () => {
-            try {
-                const response = await axios.get(`https://farmlinkbackend-qupt.onrender.com/get_counties/`);
-                const formattedCounties = response.data.counties.map(county => ({
-                    label: county.name,
-                    value: county.id
-                }));
-                setCounties(formattedCounties);
-            } catch (error) {
-                console.error("Error fetching counties", error);
-            }
-        };
-        fetchCounties();
-    }, []);
-
-    // Fetch areas when a county is selected
-    useEffect(() => {
-        const fetchAreas = async () => {
-            if (!countyValue) return;
-            try {
-                const response = await axios.get(`https://farmlinkbackend-qupt.onrender.com/get_areas_by_county/${countyValue}`);
-                const formattedAreas = response.data.areas.map(area => ({
-                    label: area.name,
-                    value: area.id
-                }));
-                setAreas(formattedAreas);
-            } catch (error) {
-                console.error("Error fetching areas", error);
-            }
-        };
-        fetchAreas();
-    }, [countyValue]);
 
     // Handle registration
     const handleSignUp = async () => {
-        if (!fullname || !phonenumber || !email || !countyValue || !areaValue || !password || !confirmPassword) {
-            // Toast.show({
-            //     type: "error",
-            //     text1: "Empty fields",
-            //     text2: "Please fill in all fields",
-            //     position: "center",
-            // });
+        if (!fullname || !phonenumber || !email || !areaValue || !password || !confirmPassword) {
+            Alert.alert("Error", "Please fill in all fields");
             return;
         }
 
         if (password !== confirmPassword) {
-            // Toast.show({
-            //     type: "error",
-            //     text1: "Password mismatch",
-            //     text2: "Passwords do not match",
-            //     position: "center",
-            // });
+            Alert.alert("Error", "Passwords do not match");
             return;
         }
 
         setIsLoading(true);
         try {
-            const url = "https://farmlinkbackend-qupt.onrender.com/signup/";
+            const url = "http://172.16.88.203:8000/signup/";
             const data = {
                 fullname: fullname,
+                national_id: nationalID,
                 phonenumber: phonenumber,
                 email: email,
-                county: countyValue,
-                areaofresident: areaValue,
+                area_of_residence: areaValue,
                 password: password,
             };
 
@@ -103,36 +62,17 @@ export default function SignUp() {
             });
 
             if (response.status === 201) {
-                // Toast.show({
-                //     type: "success",
-                //     text1: "Signup successful",
-                //     text2: "You can now sign in",
-                //     position: "center",
-                // });
+                Alert.alert("Success", "Signup successful");
                 router.push("signin/");
             } else {
-                // Toast.show({
-                //     type: "error",
-                //     text1: "Failed signup",
-                //     text2: response.data.message || "Something went wrong",
-                //     position: "center",
-                // });
+                Alert.alert("Error", `${response.data.message}`);
+                
             }
         } catch (error) {
             if (error.response) {
-                // Toast.show({
-                //     type: "error",
-                //     text1: "Error",
-                //     text2: error.response.data.message || "Server error",
-                //     position: "center",
-                // });
+                Alert.alert("Error", `${error.response.data.message}`);
             } else {
-                // Toast.show({
-                //     type: "error",
-                //     text1: "Network Error",
-                //     text2: error.message,
-                //     position: "center",
-                // });
+                Alert.alert("Error", `${error.message}`);
             }
         } finally {
             setIsLoading(false);
@@ -152,6 +92,15 @@ export default function SignUp() {
                             placeholder="e.g. Gideon Ushindi"
                             value={fullname}
                             onChangeText={setFullname}
+                            className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-blue-500  text-gray-700 text-lg"
+                        />
+
+                        {/* National ID */}
+                        <Text className="text-blue-500  text-lg font-bold">National ID<Text className="text-red-600"> *</Text></Text>
+                        <TextInput
+                            placeholder="e.g. 12345678"
+                            value={nationalID}
+                            onChangeText={setNationalID}
                             className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-blue-500  text-gray-700 text-lg"
                         />
 
@@ -176,22 +125,6 @@ export default function SignUp() {
                             className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-blue-500  text-gray-700 text-lg"
                         />
 
-                        {/* County Dropdown */}
-                        <Text className="text-blue-500  text-lg font-bold">County<Text className="text-red-600"> *</Text></Text>
-                        <DropDownPicker
-                            open={countyOpen}
-                            value={countyValue}
-                            items={counties}
-                            setOpen={setCountyOpen}
-                            setValue={setCountyValue}
-                            setItems={setCounties}
-                            placeholder="Select your county"
-                            style={{ borderColor: '#3B82F6', borderWidth: 1 }}
-                            listMode="SCROLLVIEW"
-                            zIndex={3000}
-                            zIndexInverse={1000}
-                        />
-
                         {/* Area Dropdown */}
                         <Text className="text-blue-500  text-lg font-bold mt-4">Area of residence<Text className="text-red-600"> *</Text></Text>
                         <DropDownPicker
@@ -203,7 +136,7 @@ export default function SignUp() {
                             setItems={setAreas}
                             placeholder="Select your area of residence"
                             style={{ borderColor: '#3B82F6', borderWidth: 1 }}
-                            listMode="SCROLLVIEW"
+                            listMode="MODAL"
                             zIndex={2000}
                             zIndexInverse={2000}
                         />

@@ -3,19 +3,19 @@ import { useRouter } from "expo-router";
 // import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
-// import Toast from "react-native-toast-message";
 import "../global.css";
 
 
@@ -28,26 +28,14 @@ export default function ForgotPassword() {
     setIsLoading(true);
     try {
       if (email === "") {
-        // Toast.show({
-        //   type: "error",
-        //   text1: "Missing Email",
-        //   text2: "Please enter your email address.",
-        // });
+        Alert.alert("Error", "Please enter your email address.");
       } else {
-        const url = `https://farmlinkbackend-qupt.onrender.com/reset_password/${email}/`;
+        const url = `http://172.16.88.203:8000/resetpassword/${email}/`;
         const response = await axios.get(url);
-        // Toast.show({
-        //   type: "success",
-        //   text1: "Reset Email Sent",
-        //   text2: response.data.message,
-        // });
+        Alert.alert("Success", `${response.data.message}`);
       }
     } catch (error) {
-    //   Toast.show({
-    //     type: "error",
-    //     text1: "Reset Failed",
-    //     text2: "Please check your connection or email format.",
-    //   });
+    Alert.alert("Error", "Please check your connection or email format.");
     } finally {
       setIsLoading(false);
     }
