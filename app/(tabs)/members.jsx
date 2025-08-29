@@ -13,7 +13,7 @@ export default function Members() {
   useEffect(() => {
     const getMembers = async () => {
       const auth_token = await AsyncStorage.getItem('token');
-      axios.get(`http://172.16.88.203:8000/members`, {
+      axios.get(`http://10.10.21.76:8000/members`, {
           method: 'GET',
           headers: {
             "Authorization": `Bearer ${auth_token}`

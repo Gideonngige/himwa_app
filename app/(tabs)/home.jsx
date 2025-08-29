@@ -27,7 +27,7 @@ export default function HomeScreen() {
       setToken(t);
       console.log("Token:", t);
 
-      const url = `http://172.16.88.203:8000/send_expo_token/${member_id}/${t}/`;
+      const url = `http://10.10.21.76:8000/send_expo_token/${member_id}/${t}/`;
       const response2 = await axios.get(url, {
           method: 'GET',
           headers: {

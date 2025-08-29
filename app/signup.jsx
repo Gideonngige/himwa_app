@@ -47,7 +47,7 @@ export default function SignUp() {
 
         setIsLoading(true);
         try {
-            const url = "http://172.16.88.203:8000/signup/";
+            const url = "http://10.10.21.76:8000/signup/";
             const data = {
                 fullname: fullname,
                 national_id: nationalID,

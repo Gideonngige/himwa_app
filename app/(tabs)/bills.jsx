@@ -2,6 +2,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { router } from "expo-router";
 import React, { useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import '../../global.css';
@@ -21,7 +22,7 @@ export default function Bills() {
         const auth_token = await AsyncStorage.getItem('token');
         const member_id = await AsyncStorage.getItem('member_id');
         const member_name = await AsyncStorage.getItem('member_name');
-        axios.get(`http://172.16.88.203:8000/get_water_summary/${member_id}/`, {
+        axios.get(`http://10.10.21.76:8000/get_water_summary/${member_id}/`, {
             method: 'GET',
             headers: {
               "Authorization": `Bearer ${auth_token}`
@@ -44,7 +45,7 @@ export default function Bills() {
       const getTransactions = async () => {
         const auth_token = await AsyncStorage.getItem('token');
         const member_id = await AsyncStorage.getItem('member_id');
-        axios.get(`http://172.16.88.203:8000/get_member_transactions/${member_id}/`, {
+        axios.get(`http://10.10.21.76:8000/get_member_transactions/${member_id}/`, {
             method: 'GET',
             headers: {
               "Authorization": `Bearer ${auth_token}`
@@ -66,7 +67,7 @@ export default function Bills() {
       const getBills = async () => {
         const auth_token = await AsyncStorage.getItem('token');
         const member_id = await AsyncStorage.getItem('member_id');
-        axios.get(`http://172.16.88.203:8000/get_member_bills/${member_id}/`, {
+        axios.get(`http://10.10.21.76:8000/get_member_bills/${member_id}/`, {
             method: 'GET',
             headers: {
               "Authorization": `Bearer ${auth_token}`
@@ -103,6 +104,10 @@ export default function Bills() {
     </View>
     )
   }
+  // function to go to paybill screen
+  const handlePayBill = () => {
+    router.push("/paybill");
+  }
 
   // bill component
   const Bill = ({ bill_date, units, bill_amount, due_date }) => {
@@ -121,7 +126,7 @@ export default function Bills() {
       {/* Pay Button */}
       <TouchableOpacity
         className="bg-blue-500 py-3 rounded-xl mt-5"
-        onPress={() => alert("Proceeding to payment...")}
+        onPress={handlePayBill}
       >
         <Text className="text-white font-semibold text-center text-lg">Pay Now</Text>
       </TouchableOpacity>

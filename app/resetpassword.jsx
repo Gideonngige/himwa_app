@@ -30,7 +30,7 @@ export default function ForgotPassword() {
       if (email === "") {
         Alert.alert("Error", "Please enter your email address.");
       } else {
-        const url = `http://172.16.88.203:8000/resetpassword/${email}/`;
+        const url = `http://10.10.21.76:8000/resetpassword/${email}/`;
         const response = await axios.get(url);
         Alert.alert("Success", `${response.data.message}`);
       }

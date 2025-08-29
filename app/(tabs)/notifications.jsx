@@ -18,7 +18,7 @@ export default function Notifications() {
         const member_id = await AsyncStorage.getItem('member_id');
         const auth_token = await AsyncStorage.getItem('token');
 
-        const response = await axios.get(`http://172.16.88.203:8000/get_notifications/${member_id}/`, {
+        const response = await axios.get(`http://10.10.21.76:8000/get_notifications/${member_id}/`, {
           method: 'GET',
           headers: {
             "Authorization": `Bearer ${auth_token}`

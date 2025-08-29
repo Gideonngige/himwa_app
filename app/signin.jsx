@@ -22,7 +22,7 @@ export default function SignIn() {
     else{
     setIsLoading(true);
     try {
-      const response = await fetch('http://172.16.88.203:8000/signin/', {
+      const response = await fetch('http://10.10.21.76:8000/signin/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
